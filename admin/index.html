@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Admin — Molies Kafe</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+  <!-- ===================== LOGIN ===================== -->
+  <div class="login-overlay" id="loginOverlay">
+    <div class="login-box">
+      <img src="../assets/logo.svg" alt="Molies Kafe" class="login-logo" />
+      <h1 class="login-title">Admin Access</h1>
+      <p class="login-sub">Menu management portal</p>
+      <form class="login-form" id="loginForm" novalidate>
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" required />
+        </div>
+        <p class="login-error" id="loginError">Incorrect password. Try again.</p>
+        <button type="submit" class="btn btn--primary btn--full">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <div class="admin-wrap" id="adminWrap" hidden>
+
+    <header class="admin-header">
+      <a href="../index.html" class="admin-header-logo" title="Back to site">
+        <img src="../assets/logo.svg" alt="Molies Kafe" />
+      </a>
+      <span class="admin-header-title">Menu Admin</span>
+      <button class="btn btn--ghost" id="logoutBtn">Log Out</button>
+    </header>
+
+    <main class="admin-main">
+
+      <div class="admin-toolbar">
+        <h2 class="admin-page-title">Menu Management</h2>
+        <div class="admin-toolbar-actions">
+          <button class="btn btn--outline" id="addCategoryBtn">+ New Category</button>
+          <button class="btn btn--primary"  id="addItemBtn">+ Add Item</button>
+          <button class="btn btn--ghost"    id="resetMenuBtn" title="Reset all menu changes to default">Reset to Default</button>
+        </div>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="cat-tabs" id="catTabs" role="tablist"></div>
+
+      <!-- Items for selected category -->
+      <div class="items-panel" id="itemsPanel" role="tabpanel"></div>
+
+    </main>
+  </div>
+
+  <!-- ===================== ITEM MODAL ===================== -->
+  <div class="modal-overlay" id="itemModalOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="itemModalTitle">Add Item</h3>
+        <button class="modal-close" id="itemModalClose" aria-label="Close">&times;</button>
+      </div>
+      <form id="itemForm" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="fItemId" />
+
+          <div class="field">
+            <label for="fItemName">Item Name</label>
+            <input type="text" id="fItemName" placeholder="e.g. Flat White" required />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="fItemPrice">Price (MYR)</label>
+              <input type="number" id="fItemPrice" placeholder="0.00" min="0" step="0.5" required />
+            </div>
+            <div class="field">
+              <label for="fItemCategory">Category</label>
+              <select id="fItemCategory" required></select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="fItemDesc">Description</label>
+            <input type="text" id="fItemDesc" placeholder="Short description (optional)" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--ghost" id="itemModalCancel">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================== CATEGORY MODAL ===================== -->
+  <div class="modal-overlay" id="catModalOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+      <div class="modal-header">
+        <h3 class="modal-title" id="catModalTitle">New Category</h3>
+        <button class="modal-close" id="catModalClose" aria-label="Close">&times;</button>
+      </div>
+      <form id="catForm" novalidate>
+        <div class="modal-body">
+          <div class="field">
+            <label for="fCatName">Category Name</label>
+            <input type="text" id="fCatName" placeholder="e.g. Desserts" required />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--ghost" id="catModalCancel">Cancel</button>
+          <button type="submit" class="btn btn--primary">Create Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../js/menu-data.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>

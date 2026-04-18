@@ -4,19 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Molies Kafe — Slow Coffee, Quiet Mornings</title>
-  <meta name="description" content="A neighbourhood café in Petaling Jaya serving carefully sourced coffee and unhurried food in a warm, lived-in space." />
+  <meta name="description" content="A neighbourhood café in Pantai Dalam serving carefully sourced coffee and unhurried food in a warm, lived-in space." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
 
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="siteHeader">
-    <a href="#top" class="logo"><img src="logo.svg" alt="Molies Kafe" class="logo-img" /></a>
+    <a href="#top" class="logo"><img src="assets/logo.svg" alt="Molies Kafe" class="logo-img" /></a>
     <nav class="nav" id="nav">
       <a href="#about">About</a>
       <a href="#services">Services</a>
@@ -53,7 +53,7 @@
       <div class="about-text">
         <h2>A small café, a tent, and a kitchen that <em>never stops tasting.</em></h2>
         <p>Molie's Kafe is a small, laid-back café where the tables sit under an open tent and the counter is always within arm's reach. A handful of seats, a neighbourhood rhythm, and the kind of welcome that makes you want to stay for a second slice.</p>
-        <p>Every cake on our counter comes from a local warm kitchen .The brews are classic, the flavours are honest, and the door is always open for the unhurried.</p>
+        <p>Every cake on our counter comes from a local warm kitchen. The brews are classic, the flavours are honest, and the door is always open for the unhurried.</p>
       </div>
       <aside class="about-side">
         <div class="value">
@@ -93,7 +93,7 @@
       <div class="service-card">
         <div class="service-num">03</div>
         <h3 class="service-title">Catering</h3>
-        <p class="service-desc">Want to hold an event but dont know where to get your desserts? Do contact us for any enquiries.</p>
+        <p class="service-desc">Planning an event? Contact us for catering enquiries — desserts, drinks, and good company included.</p>
       </div>
     </div>
   </section>
@@ -103,175 +103,10 @@
     <div class="section-label">03 — Menu</div>
     <h2 class="section-title">What we're <em>pouring</em><br />and plating.</h2>
 
-    <div class="menu-grid">
-      <div class="menu-col">
-        <h3 class="menu-cat">Coffee</h3>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Molies Klasik Ori</span><span class="dots"></span><span class="menu-price">8</span></div>
-          <div class="menu-item-desc">Signature. Add whipping cream for the full experience.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Molies Klasik 'O'</span><span class="dots"></span><span class="menu-price">10</span></div>
-          <div class="menu-item-desc">Black, clean, no sugar.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Espresso</span><span class="dots"></span><span class="menu-price">8</span></div>
-          <div class="menu-item-desc">Single origin, rotating monthly.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Americano</span><span class="dots"></span><span class="menu-price">10</span></div>
-          <div class="menu-item-desc">Double shot over hot water.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Cappuccino</span><span class="dots"></span><span class="menu-price">10</span></div>
-          <div class="menu-item-desc">Double shot over hot water.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Mocha</span><span class="dots"></span><span class="menu-price">10</span></div>
-          <div class="menu-item-desc">Double shot over hot water.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Latte</span><span class="dots"></span><span class="menu-price">12</span></div>
-          <div class="menu-item-desc">Velvet milk, no foam pyrotechnics.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Spanish Latte</span><span class="dots"></span><span class="menu-price">12</span></div>
-          <div class="menu-item-desc">Equal parts coffee and trust.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Salted Caramel Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">V60, brewed to order.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Butterscotch Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">V60, brewed to order.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Hazelnut Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">V60, brewed to order.</div>
-        </div>
-      </div>
+    <!-- Populated dynamically by js/main.js from js/menu-data.js -->
+    <div class="menu-grid" id="menuGrid"></div>
 
-      <div class="menu-col">
-        <h3 class="menu-cat">Non Coffee</h3>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Water</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">Still, always available.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Iced Tea</span><span class="dots"></span><span class="menu-price">10</span></div>
-          <div class="menu-item-desc">Apple · Peach · Chamomile · Lemmongrass</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Milk</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">Just pure milk.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Chocolate</span><span class="dots"></span><span class="menu-price">12</span></div>
-          <div class="menu-item-desc">Real chocolate, hot or cold.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Chocolate Hazelnut</span><span class="dots"></span><span class="menu-price">12</span></div>
-          <div class="menu-item-desc">Real chocolate, hot or cold.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Chocolate Strawberry</span><span class="dots"></span><span class="menu-price">12</span></div>
-          <div class="menu-item-desc">Real chocolate, hot or cold.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Matcha Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">Ceremonial grade, lightly sweetened.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Matcha Hazelnut Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">Ceremonial grade, lightly sweetened.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Matcha Strawberry Latte</span><span class="dots"></span><span class="menu-price">14</span></div>
-          <div class="menu-item-desc">Ceremonial grade, lightly sweetened.</div>
-        </div>
-      </div>
-
-      <div class="menu-col">
-        <h3 class="menu-cat">Refresher</h3>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Sky Lemon Fizz</span><span class="dots"></span><span class="menu-price">3.0</span></div>
-          <div class="menu-item-desc">The house plate. Sambal does the talking.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Honey Lemon Fizz</span><span class="dots"></span><span class="menu-price">4.5</span></div>
-          <div class="menu-item-desc">Same, with a sunny side egg.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Golden Peach Fizz</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Lacy, served with curry.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Berry Fizz Punch</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Lacy, served with curry.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Berry Lemon Fizz</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Lacy, served with curry.</div>
-        </div>
-      </div>
-
-      <div class="menu-col">
-        <h3 class="menu-cat">Kitchen</h3>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Mushroom Soup</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Creamy, with warm bread to dip.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Garlic Bread</span><span class="dots"></span><span class="menu-price">3.5</span></div>
-          <div class="menu-item-desc">Buttery, toasty, generous.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Half-Boiled Eggs</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Soy, pepper, old-school.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Toast</span><span class="dots"></span><span class="menu-price">3.0</span></div>
-          <div class="menu-item-desc">Kaya & butter, or chocolate.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Croissant</span><span class="dots"></span><span class="menu-price">3.0</span></div>
-          <div class="menu-item-desc">Flaky, golden, warmed on request.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Cinnamon Roll</span><span class="dots"></span><span class="menu-price">3.0</span></div>
-          <div class="menu-item-desc">Soft coils, sweet glaze.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Waffle</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Strawberry · chocolate · blueberry · peanut · butter</div>
-        </div><div class="menu-item">
-          <div class="menu-item-name"><span>Ice Cream Waffle</span><span class="dots"></span><span class="menu-price">6.0</span></div>
-          <div class="menu-item-desc">A scoop on top. That simple.</div>
-        </div><div class="menu-item">
-          <div class="menu-item-name"><span>Ice Cream Cone</span><span class="dots"></span><span class="menu-price">1.0</span></div>
-          <div class="menu-item-desc">For the in-between moments.</div>
-        </div>
-      </div>
-
-      <div class="menu-col">
-        <h3 class="menu-cat">From Our Vendors</h3>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Nasi Lemak</span><span class="dots"></span><span class="menu-price">3.0</span></div>
-          <div class="menu-item-desc">The house plate. Sambal does the talking.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Nasi Lemak Telur Mata</span><span class="dots"></span><span class="menu-price">4.5</span></div>
-          <div class="menu-item-desc">Same, with a sunny side egg.</div>
-        </div>
-        <div class="menu-item">
-          <div class="menu-item-name"><span>Roti Jala</span><span class="dots"></span><span class="menu-price">5.0</span></div>
-          <div class="menu-item-desc">Lacy, served with curry.</div>
-        </div>
-      </div>
-    </div>
-
-    <p class="menu-note">All prices in MYR. Menu updates as R&D keeps tasting. Ask the counter for today's specials.</p>
+    <p class="menu-note">All prices in MYR. Menu updates as R&amp;D keeps tasting. Ask the counter for today's specials.</p>
   </section>
 
   <!-- ============ WHERE TO FIND US ============ -->
@@ -333,10 +168,11 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <div class="footer-mark"><img src="logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" /></div>
+    <div class="footer-mark"><img src="assets/logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" /></div>
     <div class="footer-text">© Molies Kafe — Kafe tingkap anda.</div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="js/menu-data.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
