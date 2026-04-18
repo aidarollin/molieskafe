@@ -8,7 +8,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -16,11 +16,12 @@
 
   <!-- ============ HEADER ============ -->
   <header class="site-header" id="siteHeader">
-    <a href="#top" class="logo">Molies <span>Kafe</span></a>
+    <a href="#top" class="logo"><img src="logo.svg" alt="Molies Kafe" class="logo-img" /></a>
     <nav class="nav" id="nav">
       <a href="#about">About</a>
-      <a href="#history">History</a>
+      <a href="#services">Services</a>
       <a href="#menu">Menu</a>
+      <a href="#find-us">Where to Find Us</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -30,16 +31,18 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
-    <div class="hero-meta">Est. 2018 — Petaling Jaya</div>
-    <h1 class="hero-title">
-      Slow coffee.<br />
-      <em>Quiet</em> mornings.<br />
-      Honest food.
-    </h1>
-    <p class="hero-sub">A neighbourhood café for the unhurried, the curious, and the second cup.</p>
-    <div class="hero-cue" aria-hidden="true">
-      <span class="cue-line"></span>
-      <span>Scroll</span>
+    <div class="hero-inner">
+      <div class="hero-meta">Est. 2025 — Pantai Dalam</div>
+      <h1 class="hero-title">
+        Slow coffee.<br />
+        <em>Quiet</em> mornings.<br />
+        Honest food.
+      </h1>
+      <p class="hero-sub">A neighbourhood café for the unhurried, the curious, and the second cup.</p>
+      <div class="hero-cue" aria-hidden="true">
+        <span class="cue-line"></span>
+        <span>Scroll</span>
+      </div>
     </div>
   </section>
 
@@ -69,44 +72,28 @@
     </div>
   </section>
 
-  <!-- ============ HISTORY ============ -->
-  <section class="section history" id="history">
-    <div class="history-inner">
-      <div class="section-label">02 — History</div>
-      <h2 class="section-title">How we <em>got here</em>.</h2>
+  <!-- ============ SERVICES ============ -->
+  <section class="section services" id="services">
+    <div class="section-label">02 — Services</div>
+    <h2 class="section-title">What we <em>offer</em>.</h2>
 
-      <div class="timeline">
-        <article class="moment">
-          <div class="moment-year">2018</div>
-          <div class="moment-body">
-            <h3>One espresso machine, one stubborn idea.</h3>
-            <p>Molies opened in a 30sqm shoplot off SS2, with secondhand stools and a hand-painted menu board. We sold out of pastries on day three.</p>
-          </div>
-        </article>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <h3 class="service-title">Dine In</h3>
+        <p class="service-desc">A seat, a cup, and no rush. Come sit with us on weekends — we keep the music quiet and the coffee careful.</p>
+      </div>
 
-        <article class="moment">
-          <div class="moment-year">2020</div>
-          <div class="moment-body">
-            <h3>The lockdown loaves.</h3>
-            <p>When the doors closed we baked sourdough from home and delivered by bicycle. Most of those customers still come in every week.</p>
-          </div>
-        </article>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <h3 class="service-title">Takeaway</h3>
+        <p class="service-desc">Order at the counter and carry it out. Everything travels well — croissants, nasi lemak, and your flat white.</p>
+      </div>
 
-        <article class="moment">
-          <div class="moment-year">2022</div>
-          <div class="moment-body">
-            <h3>A bigger room. Same rules.</h3>
-            <p>We moved next door, doubled the seating, and kept the original counter — chips, scratches, and all. The window seat survived intact.</p>
-          </div>
-        </article>
-
-        <article class="moment">
-          <div class="moment-year">Today</div>
-          <div class="moment-body">
-            <h3>Still figuring it out.</h3>
-            <p>Eight years in, we're still tweaking the espresso ratio and arguing about the croissant recipe. Come watch us work.</p>
-          </div>
-        </article>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <h3 class="service-title">Delivery</h3>
+        <p class="service-desc">Can't make it in? We deliver via Grab and other platforms on weekends. Same food, same care, at your door.</p>
       </div>
     </div>
   </section>
@@ -189,29 +176,58 @@
     <p class="menu-note">All prices in MYR. Menu rotates with the season.</p>
   </section>
 
+  <!-- ============ WHERE TO FIND US ============ -->
+  <section class="section find-us-section" id="find-us">
+    <div class="section-label">04 — Where to Find Us</div>
+    <h2 class="section-title">Come <em>find us</em>.</h2>
+
+    <div class="find-us-grid">
+      <div class="find-us-info">
+        <div class="find-us-block">
+          <div class="find-us-label">Address</div>
+          <p>Blok F, PPR Kerinchi, R12<br />Pusat Penjaja DBKL<br />Jalan Pantai Permai 2<br />Pantai Dalam, 59200<br />Kuala Lumpur</p>
+        </div>
+
+        <div class="find-us-block">
+          <div class="find-us-label">Hours</div>
+          <p>Saturday &amp; Sunday<br />8:00am — 6:00pm</p>
+          <p><em>Closed Monday — Friday</em></p>
+        </div>
+      </div>
+
+      <div class="find-us-map">
+        <iframe
+          src="https://maps.google.com/maps?q=Molies+Kafe+Pantai+Dalam+Kuala+Lumpur&output=embed"
+          title="Molies Kafe location"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section class="section contact" id="contact">
     <div class="contact-inner">
-      <div class="section-label">04 — Contact</div>
-      <h2 class="section-title">Come <em>find us</em>.</h2>
+      <div class="section-label">05 — Contact</div>
+      <h2 class="section-title">Get in <em>touch</em>.</h2>
 
-      <div class="contact-grid">
+      <div class="contact-grid contact-grid--centered">
         <div class="contact-block">
-          <div class="contact-label">The Address</div>
-          <p>14 Jalan SS2/63<br />Petaling Jaya, Selangor<br />47300 Malaysia</p>
+          <div class="contact-label">Phone</div>
+          <p>018-358 2814</p>
         </div>
 
         <div class="contact-block">
-          <div class="contact-label">The Hours</div>
-          <p>Tuesday — Friday<br />7:30am — 5:00pm</p>
-          <p>Saturday — Sunday<br />8:00am — 6:00pm</p>
-          <p><em>Closed Mondays</em></p>
+          <div class="contact-label">Social</div>
+          <p>@molies.kafe<br /><em>on Instagram</em></p>
         </div>
 
         <div class="contact-block">
-          <div class="contact-label">The Rest</div>
-          <p>+60 3 7000 0000<br />hello@molieskafe.com</p>
-          <p>@molieskafe<br /><em>on Instagram</em></p>
+          <div class="contact-label">Hours</div>
+          <p>Saturday &amp; Sunday<br />8:00am — 6:00pm</p>
+          <p><em>Closed weekdays</em></p>
         </div>
       </div>
     </div>
@@ -219,7 +235,7 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <div class="footer-mark">M&nbsp;·&nbsp;K</div>
+    <div class="footer-mark"><img src="logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" /></div>
     <div class="footer-text">© Molies Kafe — Quiet since 2018.</div>
   </footer>
 
