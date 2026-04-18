@@ -19,9 +19,10 @@
     <a href="#top" class="logo"><img src="assets/logo.svg" alt="Molies Kafe" class="logo-img" /></a>
     <nav class="nav" id="nav">
       <a href="#about">About</a>
-      <a href="#services">Services</a>
       <a href="#menu">Menu</a>
-      <a href="#find-us">Where to Find Us</a>
+      <a href="#find-us">Find Us</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#services">Services</a>
       <a href="#contact">Contact</a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -31,14 +32,24 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
+    <!-- Decorative coffee beans (parallax via JS) -->
+    <div class="hero-beans" aria-hidden="true">
+      <svg class="hero-bean hero-bean--1" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg class="hero-bean hero-bean--2" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg class="hero-bean hero-bean--3" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg class="hero-bean hero-bean--4" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg class="hero-bean hero-bean--5" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+      <svg class="hero-bean hero-bean--6" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
+    </div>
+
     <div class="hero-inner">
-      <div class="hero-meta">Est. 2025 — Pantai Dalam</div>
-      <h1 class="hero-title">
+      <div class="hero-meta" data-animate>Est. 2025 — Pantai Dalam</div>
+      <h1 class="hero-title" data-animate>
         Simple Treats.<br />
         <em>Honest</em> Flavors.<br />
         Local Soul.
       </h1>
-      <p class="hero-sub">A neighbourhood café for the unhurried, the curious, and the second cup.</p>
+      <p class="hero-sub" data-animate>A neighbourhood café for the unhurried, the curious, and the second cup.</p>
       <div class="hero-cue" aria-hidden="true">
         <span class="cue-line"></span>
         <span>Scroll</span>
@@ -48,14 +59,17 @@
 
   <!-- ============ ABOUT ============ -->
   <section class="section" id="about">
-    <div class="section-label">01 — About Us</div>
+    <!-- Decorative bean accent -->
+    <svg class="section-bean section-bean--about" viewBox="0 0 80 120" aria-hidden="true"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="3" stroke-linecap="round"/></svg>
+
+    <div class="section-label" data-animate>01 — About Us</div>
     <div class="about-grid">
-      <div class="about-text">
+      <div class="about-text" data-animate>
         <h2>A small café, a tent, and a kitchen that <em>never stops tasting.</em></h2>
         <p>Molie's Kafe is a small, laid-back café where the tables sit under an open tent and the counter is always within arm's reach. A handful of seats, a neighbourhood rhythm, and the kind of welcome that makes you want to stay for a second slice.</p>
         <p>Every cake on our counter comes from a local warm kitchen. The brews are classic, the flavours are honest, and the door is always open for the unhurried.</p>
       </div>
-      <aside class="about-side">
+      <aside class="about-side" data-animate>
         <div class="value">
           <div class="value-num">i.</div>
           <div class="value-text">Dine-in under the tent. Laid-back. Never rushed.</div>
@@ -72,63 +86,38 @@
     </div>
   </section>
 
-  <!-- ============ SERVICES ============ -->
-  <section class="section services" id="services">
-    <div class="section-label">02 — Services</div>
-    <h2 class="section-title">What we <em>offer</em>.</h2>
-
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-num">01</div>
-        <h3 class="service-title">Dine In</h3>
-        <p class="service-desc">A seat, a cup, and no rush. Come sit with us on weekends — we keep the music quiet and the coffee careful.</p>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">02</div>
-        <h3 class="service-title">Takeaway</h3>
-        <p class="service-desc">Order at the counter and carry it out. Everything travels well — croissants, nasi lemak, and your flat white.</p>
-      </div>
-
-      <div class="service-card">
-        <div class="service-num">03</div>
-        <h3 class="service-title">Catering</h3>
-        <p class="service-desc">Planning an event? Contact us for catering enquiries — desserts, drinks, and good company included.</p>
-      </div>
-    </div>
-  </section>
-
   <!-- ============ MENU ============ -->
-  <section class="section menu" id="menu">
-    <div class="section-label">03 — Menu</div>
-    <h2 class="section-title">What we're <em>pouring</em><br />and plating.</h2>
+  <section class="section menu-section" id="menu">
+    <div class="section-label" data-animate>02 — Menu</div>
+    <h2 class="section-title" data-animate>What we're <em>pouring</em><br />and plating.</h2>
 
-    <!-- Populated dynamically by js/main.js from js/menu-data.js -->
-    <div class="menu-grid" id="menuGrid"></div>
+    <!-- Category tabs -->
+    <div class="menu-tabs" id="menuTabs" role="tablist"></div>
 
-    <p class="menu-note">All prices in MYR. Menu updates as R&amp;D keeps tasting. Ask the counter for today's specials.</p>
+    <!-- Horizontal scroll card rows (one per category, shown/hidden by tab) -->
+    <div class="menu-panels" id="menuPanels"></div>
+
+    <p class="menu-note" data-animate>All prices in MYR. Menu updates as R&amp;D keeps tasting. Ask the counter for today's specials.</p>
   </section>
 
   <!-- ============ WHERE TO FIND US ============ -->
   <section class="section find-us-section" id="find-us">
-    <div class="section-label">04 — Where to Find Us</div>
-    <h2 class="section-title">Come <em>find us</em>.</h2>
+    <div class="section-label" data-animate>03 — Where to Find Us</div>
+    <h2 class="section-title" data-animate>Come <em>find us</em>.</h2>
 
     <div class="find-us-grid">
-      <div class="find-us-info">
+      <div class="find-us-info" data-animate>
         <div class="find-us-block">
           <div class="find-us-label">Address</div>
           <p>Blok F, PPR Kerinchi, R12<br />Pusat Penjaja DBKL<br />Jalan Pantai Permai 2<br />Pantai Dalam, 59200<br />Kuala Lumpur</p>
         </div>
-
         <div class="find-us-block">
           <div class="find-us-label">Hours</div>
           <p>Saturday &amp; Sunday<br />8:00am — 6:00pm</p>
           <p><em>Closed Monday — Friday</em></p>
         </div>
       </div>
-
-      <div class="find-us-map">
+      <div class="find-us-map" data-animate>
         <iframe
           src="https://maps.google.com/maps?q=Molies+Kafe+Pantai+Dalam+Kuala+Lumpur&output=embed"
           title="Molies Kafe location"
@@ -140,24 +129,94 @@
     </div>
   </section>
 
+  <!-- ============ REVIEWS ============ -->
+  <section class="reviews-section" id="reviews">
+    <svg class="section-bean section-bean--reviews" viewBox="0 0 80 120" aria-hidden="true"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="3" stroke-linecap="round"/></svg>
+  <div class="reviews-inner">
+    <div class="section-label" data-animate>04 — Reviews</div>
+    <h2 class="section-title" data-animate>What our <em>guests</em> say.</h2>
+
+    <!-- Approved reviews rendered here by JS -->
+    <div class="reviews-grid" id="reviewsGrid"></div>
+
+    <!-- Leave a review form -->
+    <div class="review-form-wrap" data-animate>
+      <h3 class="review-form-title">Leave a Review</h3>
+      <p class="review-form-sub">Your review will appear after a quick verification. We appreciate the kind words — and the honest ones too.</p>
+
+      <form class="review-form" id="reviewForm" novalidate>
+        <div class="review-form-row">
+          <div class="review-field">
+            <label for="rvName">Your Name</label>
+            <input type="text" id="rvName" placeholder="e.g. Sarah" required />
+          </div>
+          <div class="review-field">
+            <label>Rating</label>
+            <div class="star-input" role="radiogroup" aria-label="Star rating">
+              <input type="radio" name="rvRating" id="rv5" value="5" /><label for="rv5" aria-label="5 stars">★</label>
+              <input type="radio" name="rvRating" id="rv4" value="4" /><label for="rv4" aria-label="4 stars">★</label>
+              <input type="radio" name="rvRating" id="rv3" value="3" /><label for="rv3" aria-label="3 stars">★</label>
+              <input type="radio" name="rvRating" id="rv2" value="2" /><label for="rv2" aria-label="2 stars">★</label>
+              <input type="radio" name="rvRating" id="rv1" value="1" /><label for="rv1" aria-label="1 star">★</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="review-field">
+          <label for="rvText">Your Review</label>
+          <textarea id="rvText" rows="4" placeholder="Tell us about your visit..." required></textarea>
+        </div>
+
+        <div class="review-field">
+          <label for="rvImage">Photo (optional)</label>
+          <div class="file-input-wrap">
+            <input type="file" id="rvImage" accept="image/*" />
+            <label for="rvImage" class="file-input-btn">Choose photo</label>
+            <span class="file-input-name" id="rvImageName">No file chosen</span>
+          </div>
+          <div class="review-img-preview" id="rvImgPreview" hidden>
+            <img id="rvImgThumb" src="" alt="Preview" />
+            <button type="button" class="remove-img-btn" id="rvRemoveImg">✕</button>
+          </div>
+        </div>
+
+        <p class="review-error" id="reviewError" hidden></p>
+        <p class="review-success" id="reviewSuccess" hidden>Thank you! Your review is pending verification and will appear here soon.</p>
+
+        <button type="submit" class="btn-submit">Submit Review</button>
+      </form>
+    </div>
+  </div>
+  </section>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section services-section" id="services">
+    <div class="section-label" data-animate>05 — Services &amp; Studios</div>
+    <h2 class="section-title" data-animate>More than <em>coffee</em>.</h2>
+
+    <!-- Café services (rendered dynamically) -->
+    <div class="services-grid" id="servicesGrid"></div>
+
+    <!-- Molies Studios (rendered dynamically) -->
+    <div id="studiosBlock"></div>
+  </section>
+
   <!-- ============ CONTACT ============ -->
   <section class="section contact" id="contact">
     <div class="contact-inner">
-      <div class="section-label">05 — Contact</div>
-      <h2 class="section-title">Get in <em>touch</em>.</h2>
+      <div class="section-label" data-animate>06 — Contact</div>
+      <h2 class="section-title" data-animate>Get in <em>touch</em>.</h2>
 
       <div class="contact-grid contact-grid--centered">
-        <div class="contact-block">
+        <div class="contact-block" data-animate>
           <div class="contact-label">Phone</div>
           <p>018-358 2814</p>
         </div>
-
-        <div class="contact-block">
+        <div class="contact-block" data-animate>
           <div class="contact-label">Social</div>
           <p>@molies.kafe<br /><em>on Instagram</em></p>
         </div>
-
-        <div class="contact-block">
+        <div class="contact-block" data-animate>
           <div class="contact-label">Hours</div>
           <p>Saturday &amp; Sunday<br />8:00am — 6:00pm</p>
           <p><em>Closed weekdays</em></p>
@@ -168,8 +227,13 @@
 
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <div class="footer-mark"><img src="assets/logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" /></div>
+    <div class="footer-mark">
+      <img src="assets/logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" />
+    </div>
     <div class="footer-text">© Molies Kafe — Kafe tingkap anda.</div>
+    <div class="footer-social" id="footerSocial">
+      <!-- Populated by JS from social data -->
+    </div>
   </footer>
 
   <script src="js/menu-data.js"></script>

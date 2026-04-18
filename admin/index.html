@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="../css/admin.css" />
 </head>
 <body>
@@ -22,7 +21,7 @@
       <form class="login-form" id="loginForm" novalidate>
         <div class="field">
           <label for="loginPassword">Password</label>
-          <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" required />
+          <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" />
         </div>
         <p class="login-error" id="loginError">Incorrect password. Try again.</p>
         <button type="submit" class="btn btn--primary btn--full">Sign In</button>
@@ -37,31 +36,96 @@
       <a href="../index.html" class="admin-header-logo" title="Back to site">
         <img src="../assets/logo.svg" alt="Molies Kafe" />
       </a>
-      <span class="admin-header-title">Menu Admin</span>
+      <span class="admin-header-title">Admin Panel</span>
       <button class="btn btn--ghost" id="logoutBtn">Log Out</button>
     </header>
 
+    <!-- Section navigation -->
+    <nav class="admin-section-nav" id="adminSectionNav">
+      <button class="asn-btn active" data-section="menu">Menu</button>
+      <button class="asn-btn" data-section="services">Services</button>
+      <button class="asn-btn" data-section="reviews">
+        Reviews <span class="pending-badge" id="pendingBadge" hidden></span>
+      </button>
+      <button class="asn-btn" data-section="settings">Settings</button>
+    </nav>
+
     <main class="admin-main">
 
-      <div class="admin-toolbar">
-        <h2 class="admin-page-title">Menu Management</h2>
-        <div class="admin-toolbar-actions">
-          <button class="btn btn--outline" id="addCategoryBtn">+ New Category</button>
-          <button class="btn btn--primary"  id="addItemBtn">+ Add Item</button>
-          <button class="btn btn--ghost"    id="resetMenuBtn" title="Reset all menu changes to default">Reset to Default</button>
+      <!-- ===== MENU SECTION ===== -->
+      <div id="sectionMenu" class="admin-section">
+        <div class="admin-toolbar">
+          <h2 class="admin-page-title">Menu Management</h2>
+          <div class="admin-toolbar-actions">
+            <button class="btn btn--outline" id="addCategoryBtn">+ New Category</button>
+            <button class="btn btn--primary"  id="addItemBtn">+ Add Item</button>
+            <button class="btn btn--ghost"    id="resetMenuBtn">Reset to Default</button>
+          </div>
+        </div>
+        <div class="cat-tabs" id="catTabs" role="tablist"></div>
+        <div class="items-panel" id="itemsPanel" role="tabpanel"></div>
+      </div>
+
+      <!-- ===== SERVICES SECTION ===== -->
+      <div id="sectionServices" class="admin-section" hidden>
+        <div class="admin-toolbar">
+          <h2 class="admin-page-title">Services</h2>
+          <div class="admin-toolbar-actions">
+            <button class="btn btn--ghost" id="resetServicesBtn">Reset to Default</button>
+          </div>
+        </div>
+        <div id="servicesList"></div>
+      </div>
+
+      <!-- ===== REVIEWS SECTION ===== -->
+      <div id="sectionReviews" class="admin-section" hidden>
+        <div class="admin-toolbar">
+          <h2 class="admin-page-title">Reviews</h2>
+        </div>
+
+        <div class="review-admin-tabs">
+          <button class="rev-tab active" data-rtab="pending">Pending <span id="pendingCount"></span></button>
+          <button class="rev-tab" data-rtab="approved">Approved <span id="approvedCount"></span></button>
+        </div>
+
+        <div id="revPanelPending" class="rev-panel">
+          <div id="pendingList"></div>
+        </div>
+        <div id="revPanelApproved" class="rev-panel" hidden>
+          <div id="approvedList"></div>
         </div>
       </div>
 
-      <!-- Category tabs -->
-      <div class="cat-tabs" id="catTabs" role="tablist"></div>
+      <!-- ===== SETTINGS SECTION ===== -->
+      <div id="sectionSettings" class="admin-section" hidden>
+        <div class="admin-toolbar">
+          <h2 class="admin-page-title">Settings</h2>
+        </div>
 
-      <!-- Items for selected category -->
-      <div class="items-panel" id="itemsPanel" role="tabpanel"></div>
+        <div class="settings-card">
+          <h3 class="settings-card-title">Social Media Links</h3>
+          <p class="settings-card-sub">These links appear as icons in the site footer.</p>
+          <form id="socialForm">
+            <div class="field">
+              <label for="fInstagram">Instagram URL</label>
+              <input type="url" id="fInstagram" placeholder="https://instagram.com/your_handle" />
+            </div>
+            <div class="field">
+              <label for="fTiktok">TikTok URL</label>
+              <input type="url" id="fTiktok" placeholder="https://www.tiktok.com/@your_handle" />
+            </div>
+            <div class="settings-actions">
+              <button type="submit" class="btn btn--primary">Save Links</button>
+              <p class="settings-saved" id="socialSaved" hidden>Saved!</p>
+            </div>
+          </form>
+        </div>
+      </div>
 
     </main>
   </div>
 
-  <!-- ===================== ITEM MODAL ===================== -->
+  <!-- ===== ITEM MODAL ===== -->
   <div class="modal-overlay" id="itemModalOverlay" hidden>
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="itemModalTitle">
       <div class="modal-header">
@@ -76,7 +140,6 @@
             <label for="fItemName">Item Name</label>
             <input type="text" id="fItemName" placeholder="e.g. Flat White" required />
           </div>
-
           <div class="field-row">
             <div class="field">
               <label for="fItemPrice">Price (MYR)</label>
@@ -87,25 +150,38 @@
               <select id="fItemCategory" required></select>
             </div>
           </div>
-
           <div class="field">
             <label for="fItemDesc">Description</label>
             <input type="text" id="fItemDesc" placeholder="Short description (optional)" />
           </div>
+          <div class="field">
+            <label>Photo (optional — max 800 KB)</label>
+            <div class="img-upload-wrap">
+              <div class="img-preview-box" id="itemImgPreview">
+                <span class="img-preview-placeholder">No image</span>
+              </div>
+              <div class="img-upload-controls">
+                <label for="fItemImage" class="btn btn--outline btn--sm">Upload Photo</label>
+                <input type="file" id="fItemImage" accept="image/*" />
+                <button type="button" class="btn btn--ghost btn--sm" id="removeItemImg" hidden>Remove</button>
+              </div>
+              <p class="img-upload-note" id="imgUploadError" hidden></p>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn--ghost" id="itemModalCancel">Cancel</button>
+          <button type="button" class="btn btn--ghost"    id="itemModalCancel">Cancel</button>
           <button type="submit" class="btn btn--primary">Save Item</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ===================== CATEGORY MODAL ===================== -->
+  <!-- ===== CATEGORY MODAL ===== -->
   <div class="modal-overlay" id="catModalOverlay" hidden>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="catModalTitle">
+    <div class="modal" role="dialog" aria-modal="true">
       <div class="modal-header">
-        <h3 class="modal-title" id="catModalTitle">New Category</h3>
+        <h3 class="modal-title">New Category</h3>
         <button class="modal-close" id="catModalClose" aria-label="Close">&times;</button>
       </div>
       <form id="catForm" novalidate>
@@ -116,8 +192,41 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn--ghost" id="catModalCancel">Cancel</button>
+          <button type="button" class="btn btn--ghost"   id="catModalCancel">Cancel</button>
           <button type="submit" class="btn btn--primary">Create Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== SERVICE EDIT MODAL ===== -->
+  <div class="modal-overlay" id="serviceModalOverlay" hidden>
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h3 class="modal-title">Edit Service</h3>
+        <button class="modal-close" id="serviceModalClose" aria-label="Close">&times;</button>
+      </div>
+      <form id="serviceForm" novalidate>
+        <div class="modal-body">
+          <input type="hidden" id="fServiceId" />
+          <div class="field">
+            <label for="fServiceTitle">Title</label>
+            <input type="text" id="fServiceTitle" required />
+          </div>
+          <div class="field">
+            <label for="fServiceDesc">Description</label>
+            <textarea id="fServiceDesc" rows="4"></textarea>
+          </div>
+          <!-- Studios offerings (shown only for type=studios) -->
+          <div id="offeringsSection" hidden>
+            <div class="field-section-label">Offerings</div>
+            <div id="offeringsList"></div>
+            <button type="button" class="btn btn--outline btn--sm" id="addOfferingBtn" style="margin-top:10px">+ Add Offering</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn--ghost"   id="serviceModalCancel">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save</button>
         </div>
       </form>
     </div>

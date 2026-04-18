@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" role="img" aria-label="Molies Studios mark">
+  <g transform="translate(30,30)" fill="#D4A820">
+    <circle r="5.5"/>
+    <ellipse rx="4" ry="10" transform="translate(0,-16)"/>
+    <ellipse rx="4" ry="10" transform="translate(0,16)"/>
+    <ellipse rx="10" ry="4" transform="translate(-16,0)"/>
+    <ellipse rx="10" ry="4" transform="translate(16,0)"/>
+    <ellipse rx="3" ry="7.5" transform="rotate(45) translate(0,-13)" opacity="0.65"/>
+    <ellipse rx="3" ry="7.5" transform="rotate(135) translate(0,-13)" opacity="0.65"/>
+    <ellipse rx="3" ry="7.5" transform="rotate(225) translate(0,-13)" opacity="0.65"/>
+    <ellipse rx="3" ry="7.5" transform="rotate(315) translate(0,-13)" opacity="0.65"/>
+  </g>
+</svg>
