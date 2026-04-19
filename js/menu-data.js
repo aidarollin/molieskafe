@@ -121,8 +121,8 @@ function getMenu() {
     return structuredClone(DEFAULT_MENU);
   }
 }
-function saveMenu(menu) { localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(menu)); }
-function resetMenu()    { localStorage.removeItem(MENU_STORAGE_KEY); }
+function saveMenu(menu) { localStorage.setItem(MENU_STORAGE_KEY, JSON.stringify(menu)); _dbWrite('menu', { data: menu }); }
+function resetMenu()    { localStorage.removeItem(MENU_STORAGE_KEY); _dbWrite('menu', { data: DEFAULT_MENU }); }
 
 // ============================================================
 // SERVICES
@@ -172,8 +172,8 @@ function getServices() {
     return structuredClone(DEFAULT_SERVICES);
   }
 }
-function saveServices(s) { localStorage.setItem(SERVICES_STORAGE_KEY, JSON.stringify(s)); }
-function resetServices()  { localStorage.removeItem(SERVICES_STORAGE_KEY); }
+function saveServices(s) { localStorage.setItem(SERVICES_STORAGE_KEY, JSON.stringify(s)); _dbWrite('services', { data: s }); }
+function resetServices()  { localStorage.removeItem(SERVICES_STORAGE_KEY); _dbWrite('services', { data: DEFAULT_SERVICES }); }
 
 // ============================================================
 // REVIEWS
@@ -186,7 +186,7 @@ function getReviews() {
     return stored ? JSON.parse(stored) : [];
   } catch { return []; }
 }
-function saveReviews(r) { localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(r)); }
+function saveReviews(r) { localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(r)); _dbWrite('reviews', { data: r }); }
 
 // ============================================================
 // SOCIAL LINKS — v2 structure (cafe + studios, per platform)
@@ -236,15 +236,15 @@ function getSocial() {
     return structuredClone(DEFAULT_SOCIAL);
   } catch { return structuredClone(DEFAULT_SOCIAL); }
 }
-function saveSocial(s) { localStorage.setItem(SOCIAL_STORAGE_KEY, JSON.stringify(s)); }
+function saveSocial(s) { localStorage.setItem(SOCIAL_STORAGE_KEY, JSON.stringify(s)); _dbWrite('social', s); }
 
 // ============================================================
 // STUDIOS LOGO — custom upload (base64 or null = default SVG)
 // ============================================================
 const STUDIOS_LOGO_KEY = 'molies_studios_logo_v1';
 function getStudiosLogo()         { return localStorage.getItem(STUDIOS_LOGO_KEY) || null; }
-function saveStudiosLogo(dataUrl) { localStorage.setItem(STUDIOS_LOGO_KEY, dataUrl); }
-function clearStudiosLogo()       { localStorage.removeItem(STUDIOS_LOGO_KEY); }
+function saveStudiosLogo(dataUrl) { localStorage.setItem(STUDIOS_LOGO_KEY, dataUrl); _dbWrite('studiosLogo', { data: dataUrl }); }
+function clearStudiosLogo()       { localStorage.removeItem(STUDIOS_LOGO_KEY); _dbWrite('studiosLogo', { data: '' }); }
 
 // ============================================================
 // SITE CONTENT — editable text fields
@@ -271,8 +271,131 @@ function getContent() {
     return stored ? { ...DEFAULT_CONTENT, ...JSON.parse(stored) } : { ...DEFAULT_CONTENT };
   } catch { return { ...DEFAULT_CONTENT }; }
 }
-function saveContent(c) { localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(c)); }
-function resetContent()  { localStorage.removeItem(CONTENT_STORAGE_KEY); }
+function saveContent(c) { localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(c)); _dbWrite('content', c); }
+function resetContent()  { localStorage.removeItem(CONTENT_STORAGE_KEY); _dbWrite('content', DEFAULT_CONTENT); }
+
+// ============================================================
+// GOOGLE REVIEWS INTEGRATION
+// ============================================================
+const GOOGLE_CONFIG_KEY = 'molies_google_config_v1';
+const GOOGLE_SYNCED_KEY = 'molies_google_synced_v1';
+
+function getGoogleConfig() {
+  try { return JSON.parse(localStorage.getItem(GOOGLE_CONFIG_KEY)) || { apiKey: '', placeId: '', enabled: false }; }
+  catch { return { apiKey: '', placeId: '', enabled: false }; }
+}
+function saveGoogleConfig(c) { localStorage.setItem(GOOGLE_CONFIG_KEY, JSON.stringify(c)); _dbWrite('googleConfig', c); }
+function getGoogleSynced() {
+  try { return new Set(JSON.parse(localStorage.getItem(GOOGLE_SYNCED_KEY)) || []); }
+  catch { return new Set(); }
+}
+function saveGoogleSynced(s) {
+  const arr = [...s];
+  localStorage.setItem(GOOGLE_SYNCED_KEY, JSON.stringify(arr));
+  _dbWrite('googleSynced', { data: arr });
+}
+
+// ============================================================
+// CLOUD DATABASE — Firebase Firestore
+// ============================================================
+/*
+  SETUP (one-time):
+  1. Go to console.firebase.google.com → create a project.
+  2. Add a Web app → copy the config object → paste into FB_CONFIG below.
+  3. Enable Firestore Database (Start in test mode for now).
+  4. Deploy. Data now syncs across all devices automatically.
+
+  FREE TIER: 1 GB storage · 50 K reads/day · 20 K writes/day
+  — more than enough for a café website.
+
+  NOTE: Menu-item and review images are stored as base64.
+  Keep photos ≤ 800 KB (already enforced by the upload forms).
+  If your menu document approaches 900 KB, contact Google to
+  confirm limits or switch to Firebase Storage for images.
+*/
+const FB_CONFIG = {
+  apiKey:            'AIzaSyC3ncgtB7GyVnM66TxRQsoN5NN1J4kRk94',
+  authDomain:        'molieskafe.firebaseapp.com',
+  projectId:         'molieskafe',
+  storageBucket:     'molieskafe.firebasestorage.app',
+  messagingSenderId: '359569775022',
+  appId:             '1:359569775022:web:259094f469bc69c772503f',
+};
+
+const FB_COLLECTION = 'molies_kafe';
+let _fbDb = null;
+
+function _dbReady() {
+  if (_fbDb) return _fbDb;
+  if (typeof firebase === 'undefined') return null;
+  if (FB_CONFIG.apiKey === 'PASTE_YOUR_API_KEY') return null; // not yet configured
+  try {
+    if (!firebase.apps.length) firebase.initializeApp(FB_CONFIG);
+    _fbDb = firebase.firestore();
+    return _fbDb;
+  } catch { return null; }
+}
+
+function _dbWrite(docId, payload) {
+  const db = _dbReady();
+  if (!db) return;
+  // Strip undefined values (Firestore rejects them)
+  const clean = JSON.parse(JSON.stringify(payload));
+  db.collection(FB_COLLECTION).doc(docId).set(clean)
+    .catch(e => console.warn('[DB] write failed:', docId, e));
+}
+
+// Mapping: Firestore doc → localStorage key + conversion helpers
+const _DB_MAP = [
+  { id: 'menu',        key: MENU_STORAGE_KEY,        fromDoc: d => JSON.stringify(d.data),     },
+  { id: 'reviews',     key: REVIEWS_STORAGE_KEY,     fromDoc: d => JSON.stringify(d.data),     },
+  { id: 'services',    key: SERVICES_STORAGE_KEY,    fromDoc: d => JSON.stringify(d.data),     },
+  { id: 'social',      key: SOCIAL_STORAGE_KEY,      fromDoc: d => JSON.stringify(d),          },
+  { id: 'content',     key: CONTENT_STORAGE_KEY,     fromDoc: d => JSON.stringify(d),          },
+  { id: 'studiosLogo', key: STUDIOS_LOGO_KEY,        fromDoc: d => d.data || null,             },
+  { id: 'googleConfig',key: GOOGLE_CONFIG_KEY,       fromDoc: d => JSON.stringify(d),          },
+  { id: 'googleSynced',key: GOOGLE_SYNCED_KEY,       fromDoc: d => JSON.stringify(d.data || [])},
+];
+
+async function syncFromCloud() {
+  const db = _dbReady();
+  if (!db) return;
+
+  // Avoid infinite reload loop: if we just reloaded because of a sync, skip once.
+  if (sessionStorage.getItem('_db_just_synced')) {
+    sessionStorage.removeItem('_db_just_synced');
+    return;
+  }
+
+  try {
+    const snap = await db.collection(FB_COLLECTION).get();
+    let changed = false;
+
+    snap.forEach(doc => {
+      const map = _DB_MAP.find(m => m.id === doc.id);
+      if (!map) return;
+
+      const incoming = map.fromDoc(doc.data());
+      if (incoming === null || incoming === 'null' || incoming === undefined) return;
+
+      const current = localStorage.getItem(map.key);
+      if (incoming !== current) {
+        localStorage.setItem(map.key, incoming);
+        changed = true;
+      }
+    });
+
+    if (changed) {
+      sessionStorage.setItem('_db_just_synced', '1');
+      window.location.reload();
+    }
+  } catch (e) {
+    console.warn('[DB] sync failed:', e);
+  }
+}
+
+// Kick off sync as soon as the script loads (non-blocking).
+syncFromCloud();
 
 // ============================================================
 // UTILITIES
