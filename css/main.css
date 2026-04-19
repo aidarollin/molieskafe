@@ -25,7 +25,10 @@
   --ease:      cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Safari requires this on html, not just body */
+}
 
 body {
   background: var(--bg);
@@ -37,6 +40,13 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Remove tap highlight on all interactive elements (iOS Safari) */
+a, button, label, input, select, textarea {
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection { background: var(--accent); color: var(--green-dark); }
@@ -133,6 +143,7 @@ textarea { font: inherit; }
   background: var(--green);
   overflow: hidden;
   min-height: 100vh;
+  min-height: 100svh; /* iOS Safari: excludes browser chrome */
 }
 .hero::before {
   content: '';
@@ -173,6 +184,7 @@ textarea { font: inherit; }
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
+  min-height: 100svh;
 }
 
 .hero-meta {
@@ -239,6 +251,7 @@ textarea { font: inherit; }
   max-width: var(--container);
   margin: 0 auto;
   padding: 120px var(--gutter);
+  overflow-x: clip; /* prevent bean decorations from causing horizontal scroll */
 }
 
 .section-label {
@@ -267,8 +280,8 @@ textarea { font: inherit; }
   position: absolute;
   pointer-events: none;
 }
-.section-bean--about   { width: 180px; top: 60px;    right: -40px;  color: var(--green); opacity: 0.06; transform: rotate(20deg); }
-.section-bean--reviews { width: 140px; bottom: 80px; left: -30px;   color: var(--green); opacity: 0.06; transform: rotate(-15deg); }
+.section-bean--about   { width: 180px; top: 60px;    right: 0;      color: var(--green); opacity: 0.06; transform: rotate(20deg) translateX(30%); overflow: hidden; }
+.section-bean--reviews { width: 140px; bottom: 80px; left: 0;       color: var(--green); opacity: 0.06; transform: rotate(-15deg) translateX(-30%); }
 
 /* =========================================================
    ABOUT
@@ -305,7 +318,7 @@ textarea { font: inherit; }
 /* =========================================================
    MENU — TABS + HORIZONTAL SCROLL CARDS
    ========================================================= */
-.menu-section { overflow: visible; }
+.menu-section { overflow-x: clip; } /* clip lets scroll still work vertically */
 
 .menu-tabs {
   display: flex;
@@ -564,7 +577,7 @@ textarea { font: inherit; }
   border-radius: 7px;
   background: #fff;
   color: var(--ink);
-  font-size: 15px;
+  font-size: 16px; /* ≥16px prevents iOS Safari auto-zoom on focus */
   outline: none;
   transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
   resize: vertical;
@@ -698,9 +711,11 @@ textarea { font: inherit; }
   display: block;
   width: 200px;
   height: auto;
-  border-radius: 6px;
   margin-bottom: 20px;
   background: transparent;
+  /* Safari: force SVG <img> to render without white canvas */
+  -webkit-backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* Studios social icons row */
@@ -837,7 +852,7 @@ textarea { font: inherit; }
     display: none;
     position: fixed;
     top: 0; right: 0;
-    height: 100vh; width: 78%; max-width: 320px;
+    height: 100vh; height: 100svh; width: 78%; max-width: 320px;
     background: var(--green);
     flex-direction: column;
     padding: 100px 36px;
@@ -882,4 +897,45 @@ textarea { font: inherit; }
   .contact-block p { font-size: 18px; }
 
   .footer { flex-direction: column; gap: 16px; text-align: center; }
+
+  /* Prevent hover effects from sticking on touch devices */
+  .menu-card:hover     { transform: none; box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 16px rgba(15,45,28,.06); }
+  .review-card:hover   { transform: none; border-left-color: transparent; }
+  .studios-cta:hover   { background: transparent; border-color: rgba(212,168,32,.5); color: var(--accent); }
+  .social-link:hover   { transform: none; }
+}
+
+/* =========================================================
+   CROSS-PLATFORM / SAFARI GUARDS
+   ========================================================= */
+
+/* Prevent mobile Safari bounce scroll from showing overflow content */
+body {
+  overscroll-behavior-x: none;
+}
+
+/* iOS: prevent callout on long-press of interactive elements */
+a, button, img { -webkit-touch-callout: none; }
+/* Allow text selection callout for text content */
+p, h1, h2, h3, h4, span { -webkit-touch-callout: default; }
+
+/* Prevent iOS Safari from rendering inline SVGs / <img src=".svg"> with white canvas */
+img[src$=".svg"] {
+  background: transparent;
+}
+
+/* Iframe (Google Maps): remove white border flash on iOS */
+iframe {
+  background: var(--green-dark);
+}
+
+/* Star rating: prevent Safari from compressing flex row-reverse stars */
+.star-input { -webkit-flex-direction: row-reverse; }
+
+/* Smooth scrolling disabled for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-animate] { transition: none; opacity: 1; transform: none; }
+  .hero-cue, .cue-line { animation: none; }
+  .review-collapse { transition: none; }
 }
