@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Molies Kafe</title>
-  <link rel="icon" type="image/png" href="assets/logo.svg" />
+  <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
   <meta name="description" content="A neighbourhood café in Pantai Dalam serving carefully sourced coffee and unhurried food in a warm, lived-in space." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,7 +33,6 @@
 
   <!-- ============ HERO ============ -->
   <section class="hero" id="top">
-    <!-- Decorative coffee beans (parallax via JS) -->
     <div class="hero-beans" aria-hidden="true">
       <svg class="hero-bean hero-bean--1" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
       <svg class="hero-bean hero-bean--2" viewBox="0 0 80 120"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.2)" stroke-width="3" stroke-linecap="round"/></svg>
@@ -44,40 +43,43 @@
     </div>
 
     <div class="hero-inner">
-      <div class="hero-meta" data-animate>Est. 2025 — Pantai Dalam</div>
+      <div class="hero-meta" data-animate data-content-key="hero.meta">Est. 2025 — Pantai Dalam</div>
       <h1 class="hero-title" data-animate>
         Simple Treats.<br />
         <em>Honest</em> Flavors.<br />
         Local Soul.
       </h1>
-      <p class="hero-sub" data-animate>A neighbourhood café for the unhurried, the curious, and the second cup.</p>
+      <p class="hero-sub" data-animate data-content-key="hero.sub">A neighbourhood café for the unhurried, the curious, and the second cup.</p>
+      <div class="hero-cue" aria-hidden="true">
+        <span class="cue-line"></span>
+        <span>Scroll</span>
+      </div>
     </div>
   </section>
 
   <!-- ============ ABOUT ============ -->
   <section class="section" id="about">
-    <!-- Decorative bean accent -->
     <svg class="section-bean section-bean--about" viewBox="0 0 80 120" aria-hidden="true"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="3" stroke-linecap="round"/></svg>
 
     <div class="section-label" data-animate>01 — About Us</div>
     <div class="about-grid">
       <div class="about-text" data-animate>
         <h2>A small café, a tent, and a kitchen that <em>never stops tasting.</em></h2>
-        <p>Molie's Kafe is a small, laid-back café where the tables sit under an open tent and the counter is always within arm's reach. A handful of seats, a neighbourhood rhythm, and the kind of welcome that makes you want to stay for a second slice.</p>
-        <p>Every cake on our counter comes from a local warm kitchen. The brews are classic, the flavours are honest, and the door is always open for the unhurried.</p>
+        <p data-content-key="about.p1">Molie's Kafe is a small, laid-back café where the tables sit under an open tent and the counter is always within arm's reach. A handful of seats, a neighbourhood rhythm, and the kind of welcome that makes you want to stay for a second slice.</p>
+        <p data-content-key="about.p2">Every cake on our counter comes from a local warm kitchen. The brews are classic, the flavours are honest, and the door is always open for the unhurried.</p>
       </div>
       <aside class="about-side" data-animate>
         <div class="value">
           <div class="value-num">i.</div>
-          <div class="value-text">Dine-in under the tent. Laid-back. Never rushed.</div>
+          <div class="value-text" data-content-key="about.value1">Dine-in under the tent. Laid-back. Never rushed.</div>
         </div>
         <div class="value">
           <div class="value-num">ii.</div>
-          <div class="value-text">Classic brews and local favourites, done properly.</div>
+          <div class="value-text" data-content-key="about.value2">Classic brews and local favourites, done properly.</div>
         </div>
         <div class="value">
           <div class="value-num">iii.</div>
-          <div class="value-text">Wi-Fi exists. You'll have to ask for it.</div>
+          <div class="value-text" data-content-key="about.value3">Wi-Fi exists. You'll have to ask for it.</div>
         </div>
       </aside>
     </div>
@@ -88,13 +90,10 @@
     <div class="section-label" data-animate>02 — Menu</div>
     <h2 class="section-title" data-animate>What we're <em>pouring</em><br />and plating.</h2>
 
-    <!-- Category tabs -->
     <div class="menu-tabs" id="menuTabs" role="tablist"></div>
-
-    <!-- Horizontal scroll card rows (one per category, shown/hidden by tab) -->
     <div class="menu-panels" id="menuPanels"></div>
 
-    <p class="menu-note" data-animate>The kitchen is always up to something new. Catch us at the counter to see what we're testing today.</p>
+    <p class="menu-note" data-animate>All prices in MYR. Menu updates as R&amp;D keeps tasting. Ask the counter for today's specials.</p>
   </section>
 
   <!-- ============ WHERE TO FIND US ============ -->
@@ -129,61 +128,72 @@
   <!-- ============ REVIEWS ============ -->
   <section class="reviews-section" id="reviews">
     <svg class="section-bean section-bean--reviews" viewBox="0 0 80 120" aria-hidden="true"><ellipse cx="40" cy="60" rx="32" ry="52" fill="currentColor"/><path d="M40 12 C58 32 58 48 40 60 C22 72 22 88 40 108" fill="none" stroke="rgba(0,0,0,0.15)" stroke-width="3" stroke-linecap="round"/></svg>
-  <div class="reviews-inner">
-    <div class="section-label" data-animate>04 — Reviews</div>
-    <h2 class="section-title" data-animate>What our <em>guests</em> say.</h2>
+    <div class="reviews-inner">
+      <div class="section-label" data-animate>04 — Reviews</div>
+      <h2 class="section-title" data-animate>What our <em>guests</em> say.</h2>
 
-    <!-- Approved reviews rendered here by JS -->
-    <div class="reviews-grid" id="reviewsGrid"></div>
+      <div class="reviews-grid" id="reviewsGrid"></div>
 
-    <!-- Leave a review form -->
-    <div class="review-form-wrap" data-animate>
-      <h3 class="review-form-title">Leave a Review</h3>
-      <p class="review-form-sub">Your review will appear after a quick verification. We appreciate the kind words — and the honest ones too.</p>
+      <!-- Collapsible review form -->
+      <div class="review-form-outer" data-animate>
+        <button class="review-toggle" id="reviewToggle" aria-expanded="false" aria-controls="reviewCollapse">
+          <span>Leave a Review</span>
+          <svg class="review-toggle-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6"/>
+          </svg>
+        </button>
 
-      <form class="review-form" id="reviewForm" novalidate>
-        <div class="review-form-row">
-          <div class="review-field">
-            <label for="rvName">Your Name</label>
-            <input type="text" id="rvName" placeholder="e.g. Sarah" required />
-          </div>
-          <div class="review-field">
-            <label>Rating</label>
-            <div class="star-input" role="radiogroup" aria-label="Star rating">
-              <input type="radio" name="rvRating" id="rv5" value="5" /><label for="rv5" aria-label="5 stars">★</label>
-              <input type="radio" name="rvRating" id="rv4" value="4" /><label for="rv4" aria-label="4 stars">★</label>
-              <input type="radio" name="rvRating" id="rv3" value="3" /><label for="rv3" aria-label="3 stars">★</label>
-              <input type="radio" name="rvRating" id="rv2" value="2" /><label for="rv2" aria-label="2 stars">★</label>
-              <input type="radio" name="rvRating" id="rv1" value="1" /><label for="rv1" aria-label="1 star">★</label>
+        <div class="review-collapse" id="reviewCollapse" role="region" aria-labelledby="reviewToggle">
+          <div class="review-collapse-inner">
+            <div class="review-form-wrap">
+              <p class="review-form-sub">Your review will appear after a quick verification. We appreciate the kind words — and the honest ones too.</p>
+
+              <form class="review-form" id="reviewForm" novalidate>
+                <div class="review-form-row">
+                  <div class="review-field">
+                    <label for="rvName">Your Name</label>
+                    <input type="text" id="rvName" placeholder="e.g. Sarah" required />
+                  </div>
+                  <div class="review-field">
+                    <label>Rating</label>
+                    <div class="star-input" role="radiogroup" aria-label="Star rating">
+                      <input type="radio" name="rvRating" id="rv5" value="5" /><label for="rv5" aria-label="5 stars">★</label>
+                      <input type="radio" name="rvRating" id="rv4" value="4" /><label for="rv4" aria-label="4 stars">★</label>
+                      <input type="radio" name="rvRating" id="rv3" value="3" /><label for="rv3" aria-label="3 stars">★</label>
+                      <input type="radio" name="rvRating" id="rv2" value="2" /><label for="rv2" aria-label="2 stars">★</label>
+                      <input type="radio" name="rvRating" id="rv1" value="1" /><label for="rv1" aria-label="1 star">★</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="review-field">
+                  <label for="rvText">Your Review</label>
+                  <textarea id="rvText" rows="4" placeholder="Tell us about your visit..." required></textarea>
+                </div>
+
+                <div class="review-field">
+                  <label for="rvImage">Photo (optional)</label>
+                  <div class="file-input-wrap">
+                    <input type="file" id="rvImage" accept="image/*" />
+                    <label for="rvImage" class="file-input-btn">Choose photo</label>
+                    <span class="file-input-name" id="rvImageName">No file chosen</span>
+                  </div>
+                  <div class="review-img-preview" id="rvImgPreview" hidden>
+                    <img id="rvImgThumb" src="" alt="Preview" />
+                    <button type="button" class="remove-img-btn" id="rvRemoveImg">✕</button>
+                  </div>
+                </div>
+
+                <p class="review-error" id="reviewError" hidden></p>
+                <p class="review-success" id="reviewSuccess" hidden>Thank you! Your review is pending verification and will appear here soon.</p>
+
+                <button type="submit" class="btn-submit">Submit Review</button>
+              </form>
             </div>
           </div>
         </div>
-
-        <div class="review-field">
-          <label for="rvText">Your Review</label>
-          <textarea id="rvText" rows="4" placeholder="Tell us about your visit..." required></textarea>
-        </div>
-
-        <div class="review-field">
-          <label for="rvImage">Photo (optional)</label>
-          <div class="file-input-wrap">
-            <input type="file" id="rvImage" accept="image/*" />
-            <label for="rvImage" class="file-input-btn">Choose photo</label>
-            <span class="file-input-name" id="rvImageName">No file chosen</span>
-          </div>
-          <div class="review-img-preview" id="rvImgPreview" hidden>
-            <img id="rvImgThumb" src="" alt="Preview" />
-            <button type="button" class="remove-img-btn" id="rvRemoveImg">✕</button>
-          </div>
-        </div>
-
-        <p class="review-error" id="reviewError" hidden></p>
-        <p class="review-success" id="reviewSuccess" hidden>Thank you! Your review is pending verification and will appear here soon.</p>
-
-        <button type="submit" class="btn-submit">Submit Review</button>
-      </form>
+      </div>
     </div>
-  </div>
   </section>
 
   <!-- ============ SERVICES ============ -->
@@ -191,10 +201,7 @@
     <div class="section-label" data-animate>05 — Services &amp; Studios</div>
     <h2 class="section-title" data-animate>More than <em>coffee</em>.</h2>
 
-    <!-- Café services (rendered dynamically) -->
     <div class="services-grid" id="servicesGrid"></div>
-
-    <!-- Molies Studios (rendered dynamically) -->
     <div id="studiosBlock"></div>
   </section>
 
@@ -207,11 +214,11 @@
       <div class="contact-grid contact-grid--centered">
         <div class="contact-block" data-animate>
           <div class="contact-label">Phone</div>
-          <p>018-358 2814</p>
+          <p data-content-key="contact.phone">018-358 2814</p>
         </div>
         <div class="contact-block" data-animate>
           <div class="contact-label">Social</div>
-          <p>@molies.kafe<br /><em>on Instagram</em></p>
+          <p><span data-content-key="contact.ig">@molies.kafe</span><br /><em>on Instagram</em></p>
         </div>
         <div class="contact-block" data-animate>
           <div class="contact-label">Hours</div>
@@ -227,10 +234,8 @@
     <div class="footer-mark">
       <img src="assets/logo.svg" alt="Molies Kafe" class="logo-img logo-img--footer" />
     </div>
-    <div class="footer-text">© Molies Kafe — Kafe tingkap anda.</div>
-    <div class="footer-social" id="footerSocial">
-      <!-- Populated by JS from social data -->
-    </div>
+    <div class="footer-text" data-content-key="footer.copy">© Molies Kafe — Kafe tingkap anda.</div>
+    <div class="footer-social" id="footerSocial"></div>
   </footer>
 
   <script src="js/menu-data.js"></script>

@@ -12,10 +12,12 @@
   const nav       = document.getElementById('nav');
   const navToggle = document.getElementById('navToggle');
 
-  window.addEventListener('scroll', () => {
+  function onScroll() {
     header.classList.toggle('scrolled', window.scrollY > 40);
     updateParallax();
-  }, { passive: true });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
   header.classList.toggle('scrolled', window.scrollY > 40);
 
   navToggle.addEventListener('click', () => {
@@ -41,17 +43,17 @@
   });
 
   // ============================================================
-  // PARALLAX — hero coffee beans shift at 40% scroll speed
+  // PARALLAX — hero coffee beans
   // ============================================================
   const heroBeans = document.querySelectorAll('.hero-bean');
 
   function updateParallax() {
     const y = window.scrollY;
     heroBeans.forEach((bean, i) => {
-      const speed  = 0.25 + (i % 3) * 0.12;
+      const speed  = 0.22 + (i % 3) * 0.1;
       const offset = y * speed;
-      bean.style.transform = bean.style.transform.replace(/translateY\([^)]+\)/, '')
-        + ` translateY(${offset}px)`;
+      const base   = bean.style.transform.replace(/translateY\([^)]+\)/, '').trim();
+      bean.style.transform = (base ? base + ' ' : '') + `translateY(${offset}px)`;
     });
   }
   updateParallax();
@@ -60,23 +62,32 @@
   // SCROLL ENTRANCE — IntersectionObserver
   // ============================================================
   const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach(entry => {
       if (!entry.isIntersecting) return;
-      // stagger siblings inside a grid/flex parent
       const siblings = entry.target.parentElement.querySelectorAll('[data-animate]');
       let delay = 0;
       siblings.forEach((sib, j) => { if (sib === entry.target) delay = j * 80; });
       setTimeout(() => entry.target.classList.add('in-view'), delay);
       io.unobserve(entry.target);
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.1 });
 
   document.querySelectorAll('[data-animate]').forEach(el => io.observe(el));
 
   // ============================================================
+  // CONTENT — apply stored text to data-content-key elements
+  // ============================================================
+  function applyContent() {
+    const c = getContent();
+    document.querySelectorAll('[data-content-key]').forEach(el => {
+      const key = el.dataset.contentKey;
+      if (c[key] !== undefined) el.textContent = c[key];
+    });
+  }
+
+  // ============================================================
   // MENU — tabs + horizontal-scroll cards
   // ============================================================
-
   const CAT_GRADIENTS = {
     'coffee':     ['#1A3D2B', '#2D6A47'],
     'non-coffee': ['#243B30', '#3A6655'],
@@ -102,7 +113,7 @@
     panelsEl.innerHTML = '';
 
     menu.forEach((cat, idx) => {
-      // Tab button
+      // Tab
       const tab = document.createElement('button');
       tab.className = 'menu-tab' + (idx === 0 ? ' active' : '');
       tab.textContent = cat.category;
@@ -113,8 +124,8 @@
 
       // Panel
       const panel = document.createElement('div');
-      panel.className   = 'menu-panel' + (idx === 0 ? ' active' : '');
-      panel.id          = 'panel-' + cat.id;
+      panel.className = 'menu-panel' + (idx === 0 ? ' active' : '');
+      panel.id        = 'panel-' + cat.id;
       panel.setAttribute('role', 'tabpanel');
 
       const scrollWrap = document.createElement('div');
@@ -122,12 +133,12 @@
 
       const btnLeft  = document.createElement('button');
       btnLeft.className = 'scroll-btn scroll-btn--left';
-      btnLeft.textContent = '‹';
+      btnLeft.innerHTML = '&#8249;';
       btnLeft.setAttribute('aria-label', 'Scroll left');
 
       const btnRight = document.createElement('button');
       btnRight.className = 'scroll-btn scroll-btn--right';
-      btnRight.textContent = '›';
+      btnRight.innerHTML = '&#8250;';
       btnRight.setAttribute('aria-label', 'Scroll right');
 
       const scroller = document.createElement('div');
@@ -171,15 +182,14 @@
       panel.appendChild(scrollWrap);
       panelsEl.appendChild(panel);
 
-      // Arrow button logic
       function syncBtns() {
         btnLeft.hidden  = scroller.scrollLeft <= 4;
         btnRight.hidden = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 4;
       }
       scroller.addEventListener('scroll', syncBtns, { passive: true });
-      btnLeft.addEventListener('click',  () => scroller.scrollBy({ left: -260, behavior: 'smooth' }));
-      btnRight.addEventListener('click', () => scroller.scrollBy({ left:  260, behavior: 'smooth' }));
-      setTimeout(syncBtns, 50);
+      btnLeft.addEventListener('click',  () => scroller.scrollBy({ left: -250, behavior: 'smooth' }));
+      btnRight.addEventListener('click', () => scroller.scrollBy({ left:  250, behavior: 'smooth' }));
+      setTimeout(syncBtns, 80);
     });
 
     // Tab switching
@@ -198,8 +208,9 @@
       const panel = document.getElementById('panel-' + tab.dataset.panel);
       if (panel) {
         panel.classList.add('active');
-        // Re-sync scroll buttons for newly visible panel
-        panel.querySelector('.menu-scroll')?.dispatchEvent(new Event('scroll'));
+        setTimeout(() => {
+          panel.querySelector('.menu-scroll')?.dispatchEvent(new Event('scroll'));
+        }, 50);
       }
     });
   }
@@ -208,13 +219,15 @@
   // SERVICES — render café cards + studios block
   // ============================================================
   function renderServices() {
-    const grid   = document.getElementById('servicesGrid');
-    const studios = document.getElementById('studiosBlock');
+    const grid         = document.getElementById('servicesGrid');
+    const studiosBlock = document.getElementById('studiosBlock');
     if (!grid) return;
 
-    const services = getServices();
-    const cafeServices = services.filter(s => s.type !== 'studios');
-    const studiosData  = services.find(s => s.type === 'studios');
+    const services      = getServices();
+    const cafeServices  = services.filter(s => s.type !== 'studios');
+    const studiosData   = services.find(s => s.type === 'studios');
+    const social        = getSocial();
+    const studiosSocial = social.studios || {};
 
     // Café service cards
     grid.innerHTML = cafeServices.map(s => `
@@ -226,7 +239,10 @@
     `).join('');
 
     // Molies Studios block
-    if (studios && studiosData) {
+    if (studiosBlock && studiosData) {
+      const customLogo = getStudiosLogo();
+      const logoSrc    = customLogo || 'assets/studios-logo.svg';
+
       const offerings = (studiosData.offerings || []).map(o => `
         <div class="offering">
           <div class="offering-name">${escHtml(o.name)}</div>
@@ -234,27 +250,36 @@
         </div>
       `).join('');
 
-      studios.innerHTML = `
+      // Studios social links (enabled platforms only)
+      const studiosSocialHtml = SOCIAL_PLATFORMS
+        .filter(p => studiosSocial[p.key]?.enabled && studiosSocial[p.key]?.url)
+        .map(p => `
+          <a href="${escHtml(studiosSocial[p.key].url)}" class="studios-social-link"
+             target="_blank" rel="noopener" aria-label="${escHtml(p.label)}">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${p.svg}</svg>
+          </a>
+        `).join('');
+
+      const pageUrl = studiosSocial.pageUrl || '';
+      const ctaHtml = pageUrl
+        ? `<a href="${escHtml(pageUrl)}" class="studios-cta" target="_blank" rel="noopener">Visit Studio Page →</a>`
+        : '';
+
+      studiosBlock.innerHTML = `
         <div class="studios-block" data-animate>
           <div class="studios-info">
-            <div class="studios-logo-wrap">
-              <img src="assets/studios-logo.svg" alt="Molies Studios mark" class="studios-logo-icon" />
-              <div class="studios-logo-text">
-                <span class="studios-logo-main">Molies</span>
-                <span class="studios-logo-sub">Studios</span>
-              </div>
-            </div>
+            <img src="${escHtml(logoSrc)}" alt="Molies Studios" class="studios-logo-wordmark" />
             <p class="studios-desc">${escHtml(studiosData.desc)}</p>
+            ${studiosSocialHtml ? `<div class="studios-social">${studiosSocialHtml}</div>` : ''}
+            ${ctaHtml}
           </div>
           <div class="studios-offerings">${offerings}</div>
         </div>
       `;
 
-      // Observe newly inserted animate elements
-      studios.querySelectorAll('[data-animate]').forEach(el => io.observe(el));
+      studiosBlock.querySelectorAll('[data-animate]').forEach(el => io.observe(el));
     }
 
-    // Observe newly inserted animate elements in services grid
     grid.querySelectorAll('[data-animate]').forEach(el => io.observe(el));
   }
 
@@ -282,22 +307,32 @@
     `).join('');
   }
 
+  // Review form collapse toggle
+  const reviewToggle   = document.getElementById('reviewToggle');
+  const reviewCollapse = document.getElementById('reviewCollapse');
+  if (reviewToggle && reviewCollapse) {
+    reviewToggle.addEventListener('click', () => {
+      const expanded = reviewToggle.getAttribute('aria-expanded') === 'true';
+      reviewToggle.setAttribute('aria-expanded', String(!expanded));
+      reviewCollapse.classList.toggle('open', !expanded);
+    });
+  }
+
   // Review form submission
   const reviewForm = document.getElementById('reviewForm');
   if (reviewForm) {
     let capturedImage = null;
 
-    const rvImage    = document.getElementById('rvImage');
-    const rvImageName= document.getElementById('rvImageName');
-    const rvPreview  = document.getElementById('rvImgPreview');
-    const rvThumb    = document.getElementById('rvImgThumb');
-    const rvRemove   = document.getElementById('rvRemoveImg');
+    const rvImage     = document.getElementById('rvImage');
+    const rvImageName = document.getElementById('rvImageName');
+    const rvPreview   = document.getElementById('rvImgPreview');
+    const rvThumb     = document.getElementById('rvImgThumb');
+    const rvRemove    = document.getElementById('rvRemoveImg');
 
     rvImage?.addEventListener('change', () => {
       const file = rvImage.files[0];
       if (!file) return;
 
-      // Warn if image is too large for localStorage
       if (file.size > 800 * 1024) {
         document.getElementById('reviewError').textContent = 'Image must be under 800 KB.';
         document.getElementById('reviewError').hidden = false;
@@ -305,12 +340,11 @@
         return;
       }
       document.getElementById('reviewError').hidden = true;
-
       rvImageName.textContent = file.name;
       const reader = new FileReader();
       reader.onload = ev => {
         capturedImage = ev.target.result;
-        rvThumb.src = capturedImage;
+        rvThumb.src   = capturedImage;
         rvPreview.hidden = false;
       };
       reader.readAsDataURL(file);
@@ -335,9 +369,9 @@
       errEl.hidden = true;
       okEl.hidden  = true;
 
-      if (!name)   { errEl.textContent = 'Please enter your name.';   errEl.hidden = false; return; }
+      if (!name)   { errEl.textContent = 'Please enter your name.';      errEl.hidden = false; return; }
       if (!rating) { errEl.textContent = 'Please select a star rating.'; errEl.hidden = false; return; }
-      if (!text)   { errEl.textContent = 'Please write a review.';    errEl.hidden = false; return; }
+      if (!text)   { errEl.textContent = 'Please write a review.';       errEl.hidden = false; return; }
 
       const reviews = getReviews();
       reviews.push({
@@ -360,31 +394,30 @@
   }
 
   // ============================================================
-  // FOOTER — social links
+  // FOOTER — social links (café, enabled platforms)
   // ============================================================
   function renderFooterSocial() {
     const el = document.getElementById('footerSocial');
     if (!el) return;
 
-    const social = getSocial();
+    const cafeSocial = getSocial().cafe || {};
 
-    el.innerHTML = `
-      <a href="${escHtml(social.instagram)}" class="social-link" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-      </a>
-      <a href="${escHtml(social.tiktok)}" class="social-link" target="_blank" rel="noopener" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
-        </svg>
-      </a>
-    `;
+    const links = SOCIAL_PLATFORMS
+      .filter(p => cafeSocial[p.key]?.enabled && cafeSocial[p.key]?.url)
+      .map(p => `
+        <a href="${escHtml(cafeSocial[p.key].url)}" class="social-link"
+           target="_blank" rel="noopener" aria-label="${escHtml(p.label)}">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${p.svg}</svg>
+        </a>
+      `).join('');
+
+    el.innerHTML = links;
   }
 
   // ============================================================
   // INIT
   // ============================================================
+  applyContent();
   renderMenu();
   renderServices();
   renderReviews();

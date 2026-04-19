@@ -69,6 +69,7 @@ function switchSection(name) {
   if (name === 'services') renderServicesAdmin();
   if (name === 'reviews')  renderReviewsAdmin();
   if (name === 'settings') renderSettings();
+  if (name === 'content')  renderContentAdmin();
 }
 
 function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
@@ -530,24 +531,198 @@ document.getElementById('sectionReviews')?.addEventListener('click', e => {
 });
 
 // ============================================================
-// SETTINGS — SOCIAL LINKS
+// SETTINGS — SOCIAL + STUDIOS LOGO
 // ============================================================
-function renderSettings() {
-  const social = getSocial();
-  document.getElementById('fInstagram').value = social.instagram ?? '';
-  document.getElementById('fTiktok').value    = social.tiktok    ?? '';
-  document.getElementById('socialSaved').hidden = true;
+let capturedStudiosLogo = null;
+
+function buildSocialCard(containerId, groupKey, heading, extra = '') {
+  const social  = getSocial();
+  const group   = social[groupKey] || {};
+
+  const rows = SOCIAL_PLATFORMS.map(p => {
+    const val     = group[p.key] || {};
+    const enabled = val.enabled ?? false;
+    const url     = val.url     ?? '';
+    return `
+      <div class="social-platform-row" data-spkey="${escHtml(p.key)}" data-spgroup="${groupKey}">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="sp-icon">${p.svg}</svg>
+        <div class="sp-info">
+          <span class="sp-label">${escHtml(p.label)}</span>
+          <input type="url" class="sp-url" placeholder="https://..." value="${escHtml(url)}" />
+        </div>
+        <label class="toggle-switch" title="${enabled ? 'Enabled' : 'Disabled'}">
+          <input type="checkbox" class="toggle-input" ${enabled ? 'checked' : ''} />
+          <span class="toggle-track"></span>
+        </label>
+      </div>`;
+  }).join('');
+
+  document.getElementById(containerId).innerHTML = `
+    <div class="settings-card">
+      <div class="settings-card-header">
+        <h3>${heading}</h3>
+      </div>
+      <div class="settings-card-body">
+        ${extra}
+        <div class="social-platforms-list">${rows}</div>
+        <div class="settings-save-row">
+          <button class="btn btn--primary btn--sm" data-save-social="${groupKey}">Save ${heading}</button>
+          <span class="settings-saved-msg" data-saved-msg="${groupKey}" hidden>Saved!</span>
+        </div>
+      </div>
+    </div>`;
+
+  document.querySelector(`[data-save-social="${groupKey}"]`).addEventListener('click', () => saveSocialGroup(groupKey, containerId));
 }
 
-document.getElementById('socialForm')?.addEventListener('submit', e => {
-  e.preventDefault();
-  saveSocial({
-    instagram: document.getElementById('fInstagram').value.trim(),
-    tiktok:    document.getElementById('fTiktok').value.trim()
+function saveSocialGroup(groupKey, containerId) {
+  const social = getSocial();
+  const group  = social[groupKey] || {};
+
+  document.querySelectorAll(`#${containerId} [data-spgroup="${groupKey}"]`).forEach(row => {
+    const key     = row.dataset.spkey;
+    const url     = row.querySelector('.sp-url').value.trim();
+    const enabled = row.querySelector('.toggle-input').checked;
+    group[key]    = { url, enabled };
   });
-  const saved = document.getElementById('socialSaved');
-  saved.hidden = false;
-  setTimeout(() => { saved.hidden = true; }, 2500);
+
+  if (groupKey === 'studios') {
+    const pageUrlInput = document.getElementById('studiosPageUrl');
+    if (pageUrlInput) group.pageUrl = pageUrlInput.value.trim();
+  }
+
+  social[groupKey] = group;
+  saveSocial(social);
+
+  const msg = document.querySelector(`[data-saved-msg="${groupKey}"]`);
+  if (msg) { msg.hidden = false; setTimeout(() => { msg.hidden = true; }, 2500); }
+}
+
+function buildStudiosExtra() {
+  const customLogo  = getStudiosLogo();
+  const previewSrc  = customLogo || '../assets/studios-logo.svg';
+  const pageUrl     = getSocial().studios?.pageUrl ?? '';
+
+  return `
+    <div class="settings-sub-section">
+      <div class="settings-sub-label">Studio Logo</div>
+      <div class="studios-logo-preview" id="studiosLogoPreview">
+        <img src="${escHtml(previewSrc)}" alt="Studios logo" id="studiosLogoImg" />
+      </div>
+      <div class="img-upload-controls" style="margin-top:10px">
+        <label for="studiosLogoFile" class="btn btn--outline btn--sm">Upload Logo</label>
+        <input type="file" id="studiosLogoFile" accept="image/*" />
+        ${customLogo ? '<button type="button" class="btn btn--ghost btn--sm" id="clearStudiosLogoBtn">Remove Custom</button>' : ''}
+      </div>
+      <p class="img-upload-note" id="studiosLogoError" hidden></p>
+    </div>
+    <div class="settings-sub-section">
+      <div class="settings-sub-label">Studio Page URL</div>
+      <input type="url" id="studiosPageUrl" class="sp-url" style="width:100%" placeholder="https://…" value="${escHtml(pageUrl)}" />
+      <p class="field-hint">Leave blank to hide the "Visit Studio Page" button.</p>
+    </div>
+    <div class="settings-sub-section">
+      <div class="settings-sub-label">Studio Social Links</div>
+    </div>`;
+}
+
+function renderSettings() {
+  buildSocialCard('cafeSocialCard',    'cafe',    'Café Social Links');
+  buildSocialCard('studiosSettingsCard', 'studios', 'Molies Studios', buildStudiosExtra());
+  bindStudiosLogoUpload();
+}
+
+function bindStudiosLogoUpload() {
+  const fileInput = document.getElementById('studiosLogoFile');
+  const errEl     = document.getElementById('studiosLogoError');
+  const imgEl     = document.getElementById('studiosLogoImg');
+  const clearBtn  = document.getElementById('clearStudiosLogoBtn');
+
+  fileInput?.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    if (file.size > 800 * 1024) {
+      errEl.textContent = 'Logo must be under 800 KB.';
+      errEl.hidden = false;
+      fileInput.value = '';
+      return;
+    }
+    errEl.hidden = true;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      saveStudiosLogo(ev.target.result);
+      imgEl.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  clearBtn?.addEventListener('click', () => {
+    clearStudiosLogo();
+    imgEl.src = '../assets/studios-logo.svg';
+    clearBtn.remove();
+  });
+}
+
+// ============================================================
+// CONTENT EDITOR
+// ============================================================
+const CONTENT_SECTIONS = [
+  { label: 'Hero',    keys: ['hero.meta', 'hero.sub'] },
+  { label: 'About',   keys: ['about.p1', 'about.p2', 'about.value1', 'about.value2', 'about.value3'] },
+  { label: 'Contact', keys: ['contact.phone', 'contact.ig'] },
+  { label: 'Footer',  keys: ['footer.copy'] },
+];
+
+const CONTENT_LABELS = {
+  'hero.meta':     'Hero tagline (small text)',
+  'hero.sub':      'Hero subtitle',
+  'about.p1':      'About paragraph 1',
+  'about.p2':      'About paragraph 2',
+  'about.value1':  'Value i',
+  'about.value2':  'Value ii',
+  'about.value3':  'Value iii',
+  'contact.phone': 'Phone number',
+  'contact.ig':    'Instagram handle',
+  'footer.copy':   'Footer copyright text',
+};
+
+function renderContentAdmin() {
+  const wrap = document.getElementById('contentEditorWrap');
+  if (!wrap) return;
+  const c = getContent();
+
+  wrap.innerHTML = CONTENT_SECTIONS.map(section => `
+    <div class="content-section">
+      <div class="content-section-label">${section.label}</div>
+      ${section.keys.map(key => `
+        <div class="content-field">
+          <label class="content-field-label" for="cf-${key.replace('.', '-')}">${CONTENT_LABELS[key] || key}</label>
+          <textarea class="content-field-input" id="cf-${key.replace('.', '-')}" data-ckey="${key}" rows="2">${escHtml(c[key] ?? '')}</textarea>
+        </div>
+      `).join('')}
+    </div>
+  `).join('') + `
+    <div class="settings-save-row">
+      <button class="btn btn--primary" id="saveContentBtn">Save All Content</button>
+      <span class="settings-saved-msg" id="contentSaved" hidden>Saved!</span>
+    </div>`;
+
+  document.getElementById('saveContentBtn').addEventListener('click', () => {
+    const c = getContent();
+    wrap.querySelectorAll('[data-ckey]').forEach(el => {
+      c[el.dataset.ckey] = el.value.trim();
+    });
+    saveContent(c);
+    const msg = document.getElementById('contentSaved');
+    msg.hidden = false;
+    setTimeout(() => { msg.hidden = true; }, 2500);
+  });
+}
+
+document.getElementById('resetContentBtn')?.addEventListener('click', () => {
+  if (!confirm('Reset all content to default? Your edits will be lost.')) return;
+  resetContent();
+  if (activeSection === 'content') renderContentAdmin();
 });
 
 // ============================================================
